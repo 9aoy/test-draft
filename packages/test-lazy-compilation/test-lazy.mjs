@@ -1,11 +1,15 @@
 import { createRsbuild } from '@rsbuild/core';
 import http from 'node:http';
-
+import path from 'node:path';
+import { globFiles } from './helper.mjs';
 const lazyCompilationPost = 12345;
 
 async function createRsbuildInstance() {
+  const entries = await globFiles();
+  const cwd = process.cwd();
+
   const rsbuild = await createRsbuild({
-    cwd: process.cwd(),
+    cwd,
     rsbuildConfig: {
       dev: {
         hmr: false,
@@ -26,10 +30,9 @@ async function createRsbuildInstance() {
         },
       },
       source: {
-        entry: {
-          index: './src/index.test.ts',
-          index1: './src/index1.test.ts',
-        },
+        entry: Object.fromEntries(
+          entries.map((entry) => [entry, path.resolve(cwd, entry)]),
+        ),
       },
       output: {
         filename: {
@@ -61,7 +64,7 @@ async function run() {
     const entries = Object.keys(entrypoints);
 
     const runFile = (entryName) => {
-      console.log('runFile', entryName);
+      console.log('should run file', entryName);
       let isFirst = true;
 
       const wait = new Promise((resolve) => {
