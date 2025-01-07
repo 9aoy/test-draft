@@ -1,11 +1,9 @@
 import { createRsbuild } from '@rsbuild/core';
 import http from 'node:http';
-import path from 'node:path';
-import { globFiles } from './helper.mjs';
+import { getEntries } from './helper.ts';
 const lazyCompilationPost = 12345;
 
 async function createRsbuildInstance() {
-  const entries = await globFiles();
   const cwd = process.cwd();
 
   const rsbuild = await createRsbuild({
@@ -30,9 +28,7 @@ async function createRsbuildInstance() {
         },
       },
       source: {
-        entry: Object.fromEntries(
-          entries.map((entry) => [entry, path.resolve(cwd, entry)]),
-        ),
+        entry: await getEntries(cwd),
       },
       output: {
         filename: {
@@ -57,27 +53,27 @@ async function run() {
       modules: true,
     });
 
-    const proxiedEntryModules = modules.filter((m) =>
-      m.identifier.startsWith('lazy-compilation-proxy'),
+    const proxiedEntryModules = modules!.filter((m) =>
+      m.identifier?.startsWith('lazy-compilation-proxy'),
     );
 
-    const entries = Object.keys(entrypoints);
+    const entries = Object.keys(entrypoints!);
 
-    const runFile = (entryName) => {
+    const runFile = (entryName: string) => {
       console.log('should run file', entryName);
       let isFirst = true;
 
-      const wait = new Promise((resolve) => {
+      const wait = new Promise<void>((resolve) => {
         rsbuild.onDevCompileDone(async ({ stats }) => {
           const { chunks } = stats.toJson({
             chunks: true,
           });
 
           // If more than one chunk exists, it means that lazy compilation is completed
-          const currentChunks = chunks.filter(
+          const currentChunks = chunks!.filter(
             (chunk) =>
-              chunk.names.includes(entryName) ||
-              chunk.parents.includes(entryName),
+              chunk.names?.includes(entryName) ||
+              chunk.parents?.includes(entryName),
           );
           if (currentChunks.length > 1 && isFirst) {
             isFirst = false;
@@ -88,7 +84,7 @@ async function run() {
       });
       // trigger lazy compilation compile (by http request or loadBundle)
       const identifier = proxiedEntryModules.find((m) =>
-        m.chunks.includes(entryName),
+        m.chunks!.includes(entryName),
       )?.identifier;
       if (!identifier) {
         rsbuildServer.environments.node.loadBundle(entryName);

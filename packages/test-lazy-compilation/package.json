@@ -5,7 +5,7 @@
   "private": true,
   "scripts": {
     "dev": "rsbuild dev",
-    "test-lazy": "node ./test-lazy.mjs",
+    "test-lazy": "node  --experimental-strip-types ./test-lazy.ts",
     "build": "rsbuild build"
   },
   "devDependencies": {

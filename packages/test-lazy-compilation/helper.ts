@@ -1,4 +1,5 @@
 import { glob } from 'tinyglobby';
+import path from 'node:path';
 
 export const globFiles = async (
   include = ['**/*.{test,spec}.?(c|m)[jt]s?(x)'],
@@ -13,4 +14,14 @@ export const globFiles = async (
 
   const files = await glob(include, globOptions);
   return files;
+};
+
+export const getEntries = async (cwd: string) => {
+  const entries = await globFiles();
+  return Object.fromEntries(
+    entries.map((entry) => {
+      const absolutePath = path.resolve(cwd, entry);
+      return [path.basename(absolutePath), path.resolve(cwd, entry)];
+    }),
+  );
 };
