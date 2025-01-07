@@ -1,0 +1,26 @@
+{
+  "name": "test-draft",
+  "private": true,
+  "version": "1.0.0",
+  "scripts": {
+    "check": "biome check --write",
+    "format": "prettier --write ."
+  },
+  "dependencies": {
+    "@testing-library/react": "^16.0.1",
+    "@testing-library/user-event": "^14.5.2",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "^1.9.3",
+    "@types/node": "^22.8.1",
+    "@types/chai": "^5.0.1",
+    "@types/react": "^18.3.12",
+    "@types/react-dom": "^18.3.1",
+    "chai": "^5.1.2",
+    "prettier": "^3.3.3",
+    "typescript": "^5.6.3"
+  },
+  "packageManager": "pnpm@8.14.1"
+}
