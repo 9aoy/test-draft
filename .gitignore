@@ -12,5 +12,5 @@ dist-types/
 !.vscode/extensions.json
 .idea
 
-
+tmp/
 *.tsbuildinfo

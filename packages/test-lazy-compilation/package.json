@@ -1,0 +1,23 @@
+{
+  "name": "test-lazy-compilation",
+  "version": "0.0.0",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "dev": "rsbuild dev",
+    "test-lazy": "node ./test-lazy.mjs",
+    "build": "rsbuild build"
+  },
+  "devDependencies": {
+    "@rsbuild/core": "latest",
+    "@types/lodash": "^4.17.14",
+    "@types/node": "^22.8.1",
+    "minimal-test": "workspace:*",
+    "polka": "^0.5.2",
+    "typescript": "^5.6.3"
+  },
+  "dependencies": {
+    "lodash": "^4.17.21",
+    "tinyglobby": "^0.2.10"
+  }
+}
