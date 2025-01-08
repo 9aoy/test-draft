@@ -11,8 +11,8 @@ export default defineConfig({
         tsconfigPath: './tsconfig.build.json',
         entry: {
           index: './src/**/*',
-        }
-      }
+        },
+      },
     },
     {
       format: 'cjs',
@@ -23,24 +23,8 @@ export default defineConfig({
         tsconfigPath: './tsconfig.build.json',
         entry: {
           index: './src/**/*',
-        }
-      }
+        },
+      },
     },
-    // {
-    //   format: 'cjs',
-    //   syntax: 'es2021',
-    //   dts: false,
-    //   bundle: false,
-    //   source: {
-    //     entry: {
-    //       test: './tests/**/*',
-    //     }
-    //   },
-    //   output: {
-    //     distPath: {
-    //       root: 'dist/tests'
-    //     }
-    //   }
-    // },
   ],
 });

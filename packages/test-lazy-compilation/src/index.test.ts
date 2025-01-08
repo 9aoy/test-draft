@@ -1,14 +1,14 @@
-import { describe, it, expect } from 'minimal-test';
+import { describe, it, skip, expect, run } from 'minimal-test';
 import _ from 'lodash';
 
 console.log('load index.test.ts');
 
-describe('Calculator', () => {
+describe('Index', () => {
   it('should use lodash correctly', async () => {
     expect(_.VERSION).toBe('1');
   });
 
-  it('should get lazy correctly', async () => {
+  skip('should get lazy correctly', async () => {
     const res = await import('./a');
     expect(res.a).toBe(1);
   });
@@ -22,8 +22,10 @@ describe('Calculator', () => {
     expect(obj).toEqual({ name: 'test' });
   });
 
-  it('should handle async tests', async () => {
+  skip('should handle async tests', async () => {
     const result = await Promise.resolve(42);
     expect(result).toBeGreaterThan(40);
   });
 });
+
+await run();

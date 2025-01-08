@@ -6,6 +6,11 @@
     "check": "biome check --write",
     "format": "prettier --write ."
   },
+  "pnpm": {
+    "overrides": {
+      "@rspack/core": "npm:@rspack-canary/core@1.2.0-canary-5775dc62-20250108060030"
+    }
+  },
   "dependencies": {
     "@testing-library/react": "^16.0.1",
     "@testing-library/user-event": "^14.5.2",

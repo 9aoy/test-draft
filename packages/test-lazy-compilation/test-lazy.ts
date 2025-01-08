@@ -1,6 +1,9 @@
-import { createRsbuild } from '@rsbuild/core';
+import { createRsbuild, mergeRsbuildConfig, logger } from '@rsbuild/core';
 import http from 'node:http';
-import { getEntries } from './helper.ts';
+import path from 'node:path';
+import { runInPool } from './helper.ts';
+import rsbuildConfig from './rsbuild.config.ts';
+
 const lazyCompilationPost = 12345;
 
 async function createRsbuildInstance() {
@@ -8,12 +11,7 @@ async function createRsbuildInstance() {
 
   const rsbuild = await createRsbuild({
     cwd,
-    rsbuildConfig: {
-      dev: {
-        hmr: false,
-        liveReload: false,
-        writeToDisk: true,
-      },
+    rsbuildConfig: mergeRsbuildConfig(rsbuildConfig, {
       tools: {
         rspack: {
           experiments: {
@@ -22,21 +20,13 @@ async function createRsbuildInstance() {
                 listen: lazyCompilationPost,
               },
               entries: true,
-              imports: false,
+              // imports: false,
+              imports: true,
             },
           },
         },
       },
-      source: {
-        entry: await getEntries(cwd),
-      },
-      output: {
-        filename: {
-          js: '[name].cjs',
-        },
-        target: 'node',
-      },
-    },
+    }),
   });
   return rsbuild;
 }
@@ -44,7 +34,11 @@ async function createRsbuildInstance() {
 async function run() {
   const rsbuild = await createRsbuildInstance();
 
+  console.time('run all tests with lazy');
+
   const rsbuildServer = await rsbuild.createDevServer();
+
+  await rsbuildServer.afterListen();
 
   const runFiles = async () => {
     const stats = await rsbuildServer.environments.node.getStats();
@@ -60,13 +54,16 @@ async function run() {
     const entries = Object.keys(entrypoints!);
 
     const runFile = (entryName: string) => {
-      console.log('should run file', entryName);
+      logger.debug('should run file', entryName);
+
       let isFirst = true;
 
       const wait = new Promise<void>((resolve) => {
         rsbuild.onDevCompileDone(async ({ stats }) => {
-          const { chunks } = stats.toJson({
+          const { chunks, outputPath, entrypoints } = stats.toJson({
             chunks: true,
+            entrypoints: true,
+            outputPath: true,
           });
 
           // If more than one chunk exists, it means that lazy compilation is completed
@@ -77,8 +74,16 @@ async function run() {
           );
           if (currentChunks.length > 1 && isFirst) {
             isFirst = false;
-            await rsbuildServer.environments.node.loadBundle(entryName);
-            resolve();
+            const e = entrypoints![entryName];
+            const entryFilePath = path.join(outputPath!, e.assets![0].name);
+            // rsbuildServer.environments.node
+            //   .loadBundle(entryName)
+            //   .then(() => resolve());
+
+            runInPool(entryFilePath).then(() => {
+              logger.info('run test done', entryName);
+              resolve();
+            });
           }
         });
       });
@@ -108,10 +113,6 @@ async function run() {
     };
 
     // for (const entryName of entries) {
-    //   // runFile(entryName);
-    //   // await new Promise((resolve) => {
-    //   //   setTimeout(resolve, 60);
-    //   // });
     //   await runFile(entryName);
     // }
 
@@ -119,6 +120,10 @@ async function run() {
   };
 
   await runFiles();
+
+  console.timeEnd('run all tests with lazy');
+
+  await rsbuildServer.close();
 }
 
 run();

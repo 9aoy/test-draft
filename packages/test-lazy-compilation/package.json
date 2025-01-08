@@ -5,18 +5,25 @@
   "private": true,
   "scripts": {
     "dev": "rsbuild dev",
-    "test-lazy": "node  --experimental-strip-types ./test-lazy.ts",
+    "test-lazy": "node  --experimental-strip-types --no-warnings  ./test-lazy.ts",
+    "test-bundle": "node  --experimental-strip-types --no-warnings  ./test-bundle.ts",
     "build": "rsbuild build"
   },
   "devDependencies": {
+    "@emotion/react": "^11.14.0",
+    "@emotion/styled": "^11.14.0",
+    "@mui/icons-material": "^6.3.1",
+    "@mui/material": "^6.3.1",
     "@rsbuild/core": "latest",
     "@types/lodash": "^4.17.14",
     "@types/node": "^22.8.1",
     "minimal-test": "workspace:*",
     "polka": "^0.5.2",
+    "tinypool": "^1.0.2",
     "typescript": "^5.6.3"
   },
   "dependencies": {
+    "@rsbuild/plugin-react": "^1.1.0",
     "lodash": "^4.17.21",
     "tinyglobby": "^0.2.10"
   }
