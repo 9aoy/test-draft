@@ -3,6 +3,9 @@
   "private": true,
   "version": "1.0.0",
   "scripts": {
+    "prepare": "pnpm --filter minimal-test build",
+    "test-lazy": "pnpm --filter test-lazy-compilation test-lazy",
+    "test-bundle": "pnpm --filter test-lazy-compilation test-bundle",
     "check": "biome check --write",
     "format": "prettier --write ."
   },

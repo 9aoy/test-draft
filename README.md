@@ -8,22 +8,11 @@ Install the dependencies:
 pnpm install
 ```
 
-## Get Started
-
-Start the dev server:
+## Run Test
 
 ```bash
-pnpm dev
-```
-
-Build the app for production:
-
-```bash
-pnpm build
-```
-
-Preview the production build locally:
-
-```bash
-pnpm preview
+# test lazy
+pnpm test-lazy
+# test bundle
+pnpm test-bundle
 ```
