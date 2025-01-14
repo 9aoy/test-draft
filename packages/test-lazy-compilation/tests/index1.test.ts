@@ -1,10 +1,15 @@
-import { describe, it, expect, run } from 'minimal-test';
+import { describe, it, skip, expect, run } from 'minimal-test';
+import { a, aFileName } from '../src/a';
 
-console.log('load index1.test.ts');
 describe('Index 1', () => {
   it('should add two numbers correctly', () => {
     const result = 1 + 2;
     expect(result).toBe(3);
+  });
+
+  it('should test issuer correctly', () => {
+    expect(a).toBe(2);
+    expect(aFileName.endsWith('/test-lazy-compilation/src/a.ts')).toBeTruthy();
   });
 
   it('should compare objects', () => {
@@ -17,8 +22,8 @@ describe('Index 1', () => {
     expect(result).toBeGreaterThan(40);
   });
 
-  it('should cost long time', () => {
-    for (let i = 0; i < Math.pow(8, 9); i++) {
+  skip('should cost long time', () => {
+    for (let i = 0; i < Math.pow(9, 10); i++) {
       expect(i).toBeGreaterThan(i - 1);
     }
   });

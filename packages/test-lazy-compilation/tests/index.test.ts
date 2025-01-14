@@ -8,8 +8,12 @@ describe('Index', () => {
     expect(_.VERSION).toBe('1');
   });
 
+  it('should get __dirname correctly', async () => {
+    expect(__dirname.includes('/test-lazy-compilation/tests/')).toBeTruthy();
+  });
+
   skip('should get lazy correctly', async () => {
-    const res = await import('./a');
+    const res = await import('../src/a');
     expect(res.a).toBe(1);
   });
   it('should add two numbers correctly', () => {

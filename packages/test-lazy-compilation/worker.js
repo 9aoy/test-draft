@@ -1,10 +1,18 @@
 import * as vm from 'node:vm';
 import fs from 'node:fs';
 import { createRequire } from 'node:module';
-import { dirname } from 'node:path';
+import path, { dirname, relative } from 'node:path';
 
-export default (filePath) => {
-  const __filename = filePath;
+export default ({ filePath, moduleRoot, outputPath }) => {
+  const parsedPath = path.parse(filePath);
+  // dist/src/tests/index.ts.cjs -> src/tests/index.ts
+  const filePathWithoutExt = path.join(
+    moduleRoot,
+    relative(outputPath, parsedPath.dir),
+    parsedPath.name,
+  );
+
+  const __filename = filePathWithoutExt;
   const __dirname = dirname(__filename);
   const m = {
     exports: {},

@@ -1,7 +1,31 @@
 import { glob } from 'tinyglobby';
 import path from 'node:path';
 import Tinypool from 'tinypool';
-import { logger } from '@rsbuild/core';
+import { logger, type RsbuildDevServer } from '@rsbuild/core';
+
+export const runFiles = async (rsbuildServer: RsbuildDevServer) => {
+  const stats = await rsbuildServer.environments.node.getStats();
+  const { entrypoints, outputPath } = stats.toJson({
+    entrypoints: true,
+    outputPath: true,
+  });
+
+  const entries = Object.keys(entrypoints!);
+
+  const runFile = async (entryName: string) => {
+    logger.debug('should run file', entryName);
+
+    const e = entrypoints![entryName];
+    const entryFilePath = path.join(outputPath!, e.assets![0].name);
+
+    // TODO: performance degradation when executing in the pool after index1 is bundled.
+    // await rsbuildServer.environments.node.loadBundle(entryName);
+
+    await runInPool(entryFilePath);
+  };
+
+  await Promise.all(entries.map((entry) => runFile(entry)));
+};
 
 export const runInPool = async (filePath: string) => {
   const pool = new Tinypool({
