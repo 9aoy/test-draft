@@ -1,7 +1,5 @@
-import { describe, it, skip, expect, run } from 'minimal-test';
+import { describe, expect, it } from 'vitest';
 import _ from 'lodash';
-
-console.log('load index.test.ts');
 
 describe('Index', () => {
   it('should use lodash correctly', async () => {
@@ -9,12 +7,16 @@ describe('Index', () => {
   });
 
   it('should get __dirname correctly', async () => {
-    expect(__dirname.includes('/test-lazy-compilation/tests/')).toBeTruthy();
+    expect(__dirname.includes('/packages/test/vitest')).toBeTruthy();
+    expect(
+      __filename.endsWith('/packages/test/vitest/index.test.ts'),
+    ).toBeTruthy();
   });
 
-  skip('should get lazy correctly', async () => {
+  it('should get lazy correctly', async () => {
     const res = await import('../src/a');
     expect(res.a).toBe(1);
+    expect(res.aFileName.endsWith('/packages/test/src/a.ts')).toBeTruthy();
   });
   it('should add two numbers correctly', () => {
     const result = 1 + 2;
@@ -26,10 +28,8 @@ describe('Index', () => {
     expect(obj).toEqual({ name: 'test' });
   });
 
-  skip('should handle async tests', async () => {
+  it('should handle async tests', async () => {
     const result = await Promise.resolve(42);
     expect(result).toBeGreaterThan(40);
   });
 });
-
-await run();

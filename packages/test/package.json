@@ -7,6 +7,7 @@
     "dev": "rsbuild dev",
     "test-lazy": "node  --experimental-strip-types --no-warnings  ./test-lazy.ts",
     "test-bundle": "node  --experimental-strip-types --no-warnings  ./test-bundle.ts",
+    "test-vitest": "vitest run --dir ./vitest -c ./vitest.config.ts",
     "build": "rsbuild build"
   },
   "devDependencies": {
@@ -20,10 +21,13 @@
     "minimal-test": "workspace:*",
     "polka": "^0.5.2",
     "tinypool": "^1.0.2",
-    "typescript": "^5.6.3"
+    "typescript": "^5.6.3",
+    "vitest": "^2.1.8",
+    "why-is-node-running": "^3.2.1"
   },
   "dependencies": {
     "@rsbuild/plugin-react": "^1.1.0",
+    "@vitejs/plugin-react": "^4.3.4",
     "lodash": "^4.17.21",
     "tinyglobby": "^0.2.10"
   }

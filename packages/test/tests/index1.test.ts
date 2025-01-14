@@ -9,7 +9,7 @@ describe('Index 1', () => {
 
   it('should test issuer correctly', () => {
     expect(a).toBe(2);
-    expect(aFileName.endsWith('/test-lazy-compilation/src/a.ts')).toBeTruthy();
+    expect(aFileName.endsWith('/packages/test/src/a.ts')).toBeTruthy();
   });
 
   it('should compare objects', () => {

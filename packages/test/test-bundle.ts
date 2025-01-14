@@ -2,6 +2,7 @@ import { createRsbuild } from '@rsbuild/core';
 import { runFiles } from './helper.ts';
 import rsbuildConfig from './rsbuild.config.ts';
 
+// todo: mock、dynamic import 按需、
 async function createRsbuildInstance() {
   const cwd = process.cwd();
 

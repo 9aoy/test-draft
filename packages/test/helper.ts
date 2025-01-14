@@ -3,7 +3,10 @@ import path from 'node:path';
 import Tinypool from 'tinypool';
 import { logger, type RsbuildDevServer } from '@rsbuild/core';
 
-export const runFiles = async (rsbuildServer: RsbuildDevServer) => {
+export const runFiles = async (
+  rsbuildServer: RsbuildDevServer,
+  moduleRoot = path.resolve(process.cwd(), '../../'),
+) => {
   const stats = await rsbuildServer.environments.node.getStats();
   const { entrypoints, outputPath } = stats.toJson({
     entrypoints: true,
@@ -16,32 +19,45 @@ export const runFiles = async (rsbuildServer: RsbuildDevServer) => {
     logger.debug('should run file', entryName);
 
     const e = entrypoints![entryName];
-    const entryFilePath = path.join(outputPath!, e.assets![0].name);
 
-    // TODO: performance degradation when executing in the pool after index1 is bundled.
-    // await rsbuildServer.environments.node.loadBundle(entryName);
+    const entryFilePath = path.join(
+      outputPath!,
+      e.assets![e.assets!.length - 1].name,
+    );
 
-    await runInPool(entryFilePath);
+    await runInPool(entryFilePath, moduleRoot, outputPath!);
   };
 
   await Promise.all(entries.map((entry) => runFile(entry)));
 };
 
-export const runInPool = async (filePath: string) => {
+export const runInPool = async (
+  filePath: string,
+  moduleRoot: string,
+  outputPath: string,
+) => {
   const pool = new Tinypool({
     filename: './worker.js',
   });
 
   logger.debug('run in pool', filePath);
 
-  await pool.run(filePath);
+  await pool
+    .run({
+      filePath,
+      outputPath,
+      moduleRoot,
+    })
+    .catch((err) => {
+      logger.error(`run ${filePath} failed`, err);
+    });
 
   await pool.destroy();
 };
 
 export const globFiles = async (
   include = ['**/*.{test,spec}.?(c|m)[jt]s?(x)'],
-  exclude = ['**/node_modules/**', '**/dist/**'],
+  exclude = ['**/node_modules/**', '**/dist/**', '**/vitest/**'],
   cwd = process.cwd(),
 ) => {
   const globOptions = {
@@ -54,13 +70,16 @@ export const globFiles = async (
   return files;
 };
 
-export const getEntries = async (cwd: string) => {
+export const getEntries = async (cwd: string, moduleRoot: string) => {
   const entries = await globFiles();
 
   return Object.fromEntries(
     entries.map((entry) => {
       const absolutePath = path.resolve(cwd, entry);
-      return [path.basename(absolutePath), path.resolve(cwd, entry)];
+      return [
+        path.relative(moduleRoot, absolutePath),
+        path.resolve(cwd, entry),
+      ];
     }),
   );
 };

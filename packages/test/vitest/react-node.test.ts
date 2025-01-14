@@ -1,4 +1,4 @@
-import { describe, it, skip, expect, run } from 'minimal-test';
+import { describe, expect, it } from 'vitest';
 console.log('load react-node.test.ts');
 
 describe('React Node', () => {
@@ -7,12 +7,10 @@ describe('React Node', () => {
     expect(result).toBe(3);
   });
 
-  skip('should server render correctly', async () => {
+  it('should server render correctly', async () => {
     const { render } = await import('../src/react/src/index.server');
 
     const domStr = render();
     expect(domStr.includes('Rsbuild with React')).toBeTruthy();
   });
 });
-
-await run();
