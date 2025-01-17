@@ -3,7 +3,7 @@ import _ from 'lodash';
 
 describe('Index', () => {
   it('should use lodash correctly', async () => {
-    expect(_.VERSION).toBe('1');
+    expect(_.VERSION).toBe('4.17.21');
   });
 
   it('should get __dirname correctly', async () => {

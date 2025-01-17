@@ -5,9 +5,10 @@
   "private": true,
   "scripts": {
     "dev": "rsbuild dev",
-    "test-lazy": "node  --experimental-strip-types --no-warnings  ./test-lazy.ts",
-    "test-bundle": "node  --experimental-strip-types --no-warnings  ./test-bundle.ts",
+    "test-lazy": "node  --experimental-strip-types --experimental-vm-modules --no-warnings  ./scripts/test-lazy.ts",
+    "test-bundle": "node  --experimental-strip-types --experimental-vm-modules --no-warnings  ./scripts/test-bundle.ts",
     "test-vitest": "vitest run --dir ./vitest -c ./vitest.config.ts",
+    "test-esm": "TEST_ESM_LIBRARY=1 node  --experimental-strip-types --experimental-vm-modules --no-warnings  ./scripts/test-bundle.ts",
     "build": "rsbuild build"
   },
   "devDependencies": {
@@ -15,7 +16,7 @@
     "@emotion/styled": "^11.14.0",
     "@mui/icons-material": "^6.3.1",
     "@mui/material": "^6.3.1",
-    "@rsbuild/core": "latest",
+    "@rsbuild/core": "1.2.0-beta.1",
     "@types/lodash": "^4.17.14",
     "@types/node": "^22.8.1",
     "minimal-test": "workspace:*",

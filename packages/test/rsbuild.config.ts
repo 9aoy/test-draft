@@ -1,8 +1,9 @@
-import { defineConfig, type RsbuildPlugin } from '@rsbuild/core';
-import { getEntries } from './helper.ts';
+import { defineConfig, type RsbuildPlugin, logger } from '@rsbuild/core';
+import { getEntries } from './scripts/helper.ts';
 import { pluginReact } from '@rsbuild/plugin-react';
 import path from 'node:path';
 
+// logger.level = 'error';
 // TODO: getPreserveModulesRoot （isMono ? monorepoRoot : root）
 export const moduleRoot = path.resolve(process.cwd(), '../../');
 
@@ -48,15 +49,40 @@ export default defineConfig({
           },
         },
       };
+
+      if (process.env.TEST_ESM_LIBRARY) {
+        return {
+          ...config,
+          experiments: {
+            ...config.experiments,
+            outputModule: true,
+          },
+          output: {
+            ...config.output,
+            filename: '[name].mjs',
+            chunkFilename: '[name].mjs',
+            chunkFormat: 'module',
+            chunkLoading: 'import',
+            library: {
+              type: 'module',
+            },
+          },
+        };
+      }
     },
   },
   source: {
     // include: ['@mui/icons-material'],
-    entry: await getEntries(process.cwd(), moduleRoot),
+    entry: getEntries(process.cwd(), moduleRoot),
+  },
+  performance: {
+    chunkSplit: {
+      strategy: 'all-in-one',
+    },
   },
   output: {
     externals: {
-      '@mui/icons-material': '@mui/icons-material',
+      // '@mui/icons-material': '@mui/icons-material',
       react: 'react',
       'react-dom': 'react-dom',
     },

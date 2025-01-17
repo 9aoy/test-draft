@@ -5,7 +5,6 @@ settings:
   excludeLinksFromLockfile: false
 
 overrides:
-  '@rsbuild/core': /Users/bytedance/Desktop/projects/rsbuild/packages/core
   '@rspack/core': npm:@rspack-canary/core@1.2.0-canary-5775dc62-20250108060030
 
 importers:
@@ -52,6 +51,9 @@ importers:
 
   packages/minimal:
     dependencies:
+      '@sinonjs/fake-timers':
+        specifier: ^14.0.0
+        version: 14.0.0
       tinyglobby:
         specifier: ^0.2.10
         version: 0.2.10
@@ -62,6 +64,9 @@ importers:
       '@types/node':
         specifier: ^22.8.1
         version: 22.10.2
+      '@types/sinonjs__fake-timers':
+        specifier: ^8.1.5
+        version: 8.1.5
       typescript:
         specifier: ^5.6.3
         version: 5.7.2
@@ -70,7 +75,7 @@ importers:
     dependencies:
       '@rsbuild/plugin-react':
         specifier: ^1.1.0
-        version: 1.1.0(@rsbuild/core@..+projects+rsbuild+packages+core)
+        version: 1.1.0(@rsbuild/core@1.2.0-beta.1)
       '@vitejs/plugin-react':
         specifier: ^4.3.4
         version: 4.3.4(vite@5.4.11)
@@ -94,8 +99,8 @@ importers:
         specifier: ^6.3.1
         version: 6.3.1(@emotion/react@11.14.0)(@emotion/styled@11.14.0)(@types/react@18.3.18)(react-dom@18.3.1)(react@18.3.1)
       '@rsbuild/core':
-        specifier: /Users/bytedance/Desktop/projects/rsbuild/packages/core
-        version: link:../../../../projects/rsbuild/packages/core
+        specifier: 1.2.0-beta.1
+        version: 1.2.0-beta.1
       '@types/lodash':
         specifier: ^4.17.14
         version: 4.17.14
@@ -755,6 +760,32 @@ packages:
       '@jridgewell/resolve-uri': 3.1.2
       '@jridgewell/sourcemap-codec': 1.5.0
 
+  /@module-federation/error-codes@0.8.4:
+    resolution: {integrity: sha512-55LYmrDdKb4jt+qr8qE8U3al62ZANp3FhfVaNPOaAmdTh0jHdD8M3yf5HKFlr5xVkVO4eV/F/J2NCfpbh+pEXQ==}
+
+  /@module-federation/runtime-tools@0.8.4:
+    resolution: {integrity: sha512-fjVOsItJ1u5YY6E9FnS56UDwZgqEQUrWFnouRiPtK123LUuqUI9FH4redZoKWlE1PB0ir1Z3tnqy8eFYzPO38Q==}
+    dependencies:
+      '@module-federation/runtime': 0.8.4
+      '@module-federation/webpack-bundler-runtime': 0.8.4
+
+  /@module-federation/runtime@0.8.4:
+    resolution: {integrity: sha512-yZeZ7z2Rx4gv/0E97oLTF3V6N25vglmwXGgoeju/W2YjsFvWzVtCDI7zRRb0mJhU6+jmSM8jP1DeQGbea/AiZQ==}
+    dependencies:
+      '@module-federation/error-codes': 0.8.4
+      '@module-federation/sdk': 0.8.4
+
+  /@module-federation/sdk@0.8.4:
+    resolution: {integrity: sha512-waABomIjg/5m1rPDBWYG4KUhS5r7OUUY7S+avpaVIY/tkPWB3ibRDKy2dNLLAMaLKq0u+B1qIdEp4NIWkqhqpg==}
+    dependencies:
+      isomorphic-rslog: 0.0.6
+
+  /@module-federation/webpack-bundler-runtime@0.8.4:
+    resolution: {integrity: sha512-HggROJhvHPUX7uqBD/XlajGygMNM1DG0+4OAkk8MBQe4a18QzrRNzZt6XQbRTSG4OaEoyRWhQHvYD3Yps405tQ==}
+    dependencies:
+      '@module-federation/runtime': 0.8.4
+      '@module-federation/sdk': 0.8.4
+
   /@mui/core-downloads-tracker@6.3.1:
     resolution: {integrity: sha512-2OmnEyoHpj5//dJJpMuxOeLItCCHdf99pjMFfUFdBteCunAK9jW+PwEo4mtdGcLs7P+IgZ+85ypd52eY4AigoQ==}
     dev: true
@@ -1109,12 +1140,33 @@ packages:
     requiresBuild: true
     optional: true
 
-  /@rsbuild/plugin-react@1.1.0(@rsbuild/core@..+projects+rsbuild+packages+core):
+  /@rsbuild/core@1.1.13:
+    resolution: {integrity: sha512-XBL2hrin8731W6iTGGL+x3cv07n4vm2D7u6XHRwtQkRfySzAqGx7ThlQLdNX/dJwfsoQrYQuWl/qzaljjXtGtg==}
+    engines: {node: '>=16.7.0'}
+    hasBin: true
+    dependencies:
+      '@rspack/core': /@rspack-canary/core@1.2.0-canary-5775dc62-20250108060030(@swc/helpers@0.5.15)
+      '@rspack/lite-tapable': 1.0.1
+      '@swc/helpers': 0.5.15
+      core-js: 3.39.0
+    dev: true
+
+  /@rsbuild/core@1.2.0-beta.1:
+    resolution: {integrity: sha512-+TzwALD2xEpgc2FQgjn1CtNtE2CTS1FELuWXpjI4AABjytYDGdaOHvHyCLXHiJpuvDdnyJumoN/T8i8zhbTkPg==}
+    engines: {node: '>=16.7.0'}
+    hasBin: true
+    dependencies:
+      '@rspack/core': /@rspack-canary/core@1.2.0-canary-5775dc62-20250108060030(@swc/helpers@0.5.15)
+      '@rspack/lite-tapable': 1.0.1
+      '@swc/helpers': 0.5.15
+      core-js: 3.40.0
+
+  /@rsbuild/plugin-react@1.1.0(@rsbuild/core@1.2.0-beta.1):
     resolution: {integrity: sha512-uqdRoV2V91G1XIA14dAmxqYTlTDVf0ktpE7TgwG29oQ2j+DerF1kh29WPHK9HvGE34JTfaBrsme2Zmb6bGD0cw==}
     peerDependencies:
-      '@rsbuild/core': /Users/bytedance/Desktop/projects/rsbuild/packages/core
+      '@rsbuild/core': 1.x
     dependencies:
-      '@rsbuild/core': link:../../projects/rsbuild/packages/core
+      '@rsbuild/core': 1.2.0-beta.1
       '@rspack/plugin-react-refresh': 1.0.1(react-refresh@0.16.0)
       react-refresh: 0.16.0
     dev: false
@@ -1132,11 +1184,106 @@ packages:
       typescript:
         optional: true
     dependencies:
-      '@rsbuild/core': link:../../projects/rsbuild/packages/core
-      rsbuild-plugin-dts: 0.1.5(@rsbuild/core@..+projects+rsbuild+packages+core)(typescript@5.7.2)
+      '@rsbuild/core': 1.1.13
+      rsbuild-plugin-dts: 0.1.5(@rsbuild/core@1.1.13)(typescript@5.7.2)
       tinyglobby: 0.2.10
       typescript: 5.7.2
     dev: true
+
+  /@rspack-canary/binding-darwin-arm64@1.2.0-canary-5775dc62-20250108060030:
+    resolution: {integrity: sha512-ms7Hoth/G9/e0Vd2WEpl0DVCvLU9yPopAQBryz5FvH7fVNBaZQCu81mXVSIIURIcFpwX/nE2Dr4YUVn9zDPXVA==}
+    cpu: [arm64]
+    os: [darwin]
+    requiresBuild: true
+    optional: true
+
+  /@rspack-canary/binding-darwin-x64@1.2.0-canary-5775dc62-20250108060030:
+    resolution: {integrity: sha512-ro+NuWu3YRgzdiX93elBeNe+4IDQyTMS6JmT0EEttJLEAT30vnmY4+uszqR1tkuBRpIc2W42IIErpipFYM0QBA==}
+    cpu: [x64]
+    os: [darwin]
+    requiresBuild: true
+    optional: true
+
+  /@rspack-canary/binding-linux-arm64-gnu@1.2.0-canary-5775dc62-20250108060030:
+    resolution: {integrity: sha512-qzX4n4VaIDDOhsDkneOSe0Z7zBnz+7N3VhtSb5eRi0+oY4ljEvU4cwSzDF7io3pK+HvxKlRLmyvO6rOSj13bgg==}
+    cpu: [arm64]
+    os: [linux]
+    requiresBuild: true
+    optional: true
+
+  /@rspack-canary/binding-linux-arm64-musl@1.2.0-canary-5775dc62-20250108060030:
+    resolution: {integrity: sha512-yEKhF5NTJ0NHnW/cfVuPD+rrPyApASTd5djFnuw0fRJg5LXW6s+GuL6akwLrZSGLv1XKSq0QnXf+Akgliusubg==}
+    cpu: [arm64]
+    os: [linux]
+    requiresBuild: true
+    optional: true
+
+  /@rspack-canary/binding-linux-x64-gnu@1.2.0-canary-5775dc62-20250108060030:
+    resolution: {integrity: sha512-Ij27uyU062LGSMe8wsdNkMPI490/Mq5ItgCkzisxrr7JofOZHVCYfj1DdsFaqW2x0YLpwdTiONNUAvadUVxM+Q==}
+    cpu: [x64]
+    os: [linux]
+    requiresBuild: true
+    optional: true
+
+  /@rspack-canary/binding-linux-x64-musl@1.2.0-canary-5775dc62-20250108060030:
+    resolution: {integrity: sha512-sHA5q9nHArei5YyAfeToOO42vNDoj5sCKWdFo/FKrN3dTiqnkAtFANslh9iy6mL9MnDFQACLKMGqXT/NpYM8Zg==}
+    cpu: [x64]
+    os: [linux]
+    requiresBuild: true
+    optional: true
+
+  /@rspack-canary/binding-win32-arm64-msvc@1.2.0-canary-5775dc62-20250108060030:
+    resolution: {integrity: sha512-nM4O7fqVgAV+nKZ3VbyPOv5cFTWYaOgIM5Dz44tWQuR9XMemIwQbKmWlHy2wJOCV7cibMCAwGoIS2tPQ0FX74w==}
+    cpu: [arm64]
+    os: [win32]
+    requiresBuild: true
+    optional: true
+
+  /@rspack-canary/binding-win32-ia32-msvc@1.2.0-canary-5775dc62-20250108060030:
+    resolution: {integrity: sha512-7GYq4yCn1Sju+i7JzEsaUDNxlSoZGx/9ClfTP0e41GKWmjsjpVnS85jZ0KizAC8x3iascv/2Lxe09nyNNR5A/w==}
+    cpu: [ia32]
+    os: [win32]
+    requiresBuild: true
+    optional: true
+
+  /@rspack-canary/binding-win32-x64-msvc@1.2.0-canary-5775dc62-20250108060030:
+    resolution: {integrity: sha512-WoemWU49hiZDRTWu/dhM8vaHd0qn70CN76FhyHnm/lSgNFIjMrZ5h53INi8Rz82frKoaen6EoJNYOpi0FZsQTg==}
+    cpu: [x64]
+    os: [win32]
+    requiresBuild: true
+    optional: true
+
+  /@rspack-canary/binding@1.2.0-canary-5775dc62-20250108060030:
+    resolution: {integrity: sha512-ywvcctURB8c7woe/mxE+48QXJIS+xIIp+xlZECaF7fTspnVRJU2qrqjg2hJU5ii2jvtGKtTfQ6drUYM3EyZQdw==}
+    optionalDependencies:
+      '@rspack/binding-darwin-arm64': /@rspack-canary/binding-darwin-arm64@1.2.0-canary-5775dc62-20250108060030
+      '@rspack/binding-darwin-x64': /@rspack-canary/binding-darwin-x64@1.2.0-canary-5775dc62-20250108060030
+      '@rspack/binding-linux-arm64-gnu': /@rspack-canary/binding-linux-arm64-gnu@1.2.0-canary-5775dc62-20250108060030
+      '@rspack/binding-linux-arm64-musl': /@rspack-canary/binding-linux-arm64-musl@1.2.0-canary-5775dc62-20250108060030
+      '@rspack/binding-linux-x64-gnu': /@rspack-canary/binding-linux-x64-gnu@1.2.0-canary-5775dc62-20250108060030
+      '@rspack/binding-linux-x64-musl': /@rspack-canary/binding-linux-x64-musl@1.2.0-canary-5775dc62-20250108060030
+      '@rspack/binding-win32-arm64-msvc': /@rspack-canary/binding-win32-arm64-msvc@1.2.0-canary-5775dc62-20250108060030
+      '@rspack/binding-win32-ia32-msvc': /@rspack-canary/binding-win32-ia32-msvc@1.2.0-canary-5775dc62-20250108060030
+      '@rspack/binding-win32-x64-msvc': /@rspack-canary/binding-win32-x64-msvc@1.2.0-canary-5775dc62-20250108060030
+
+  /@rspack-canary/core@1.2.0-canary-5775dc62-20250108060030(@swc/helpers@0.5.15):
+    resolution: {integrity: sha512-ke+9MY8Qw6/enGZg914Q5GinG1pSHDAtCoh8ek+HQMqqdoH2MhwAsI9R4TCxLnjZdmDPiHLpzSDiuY6+ggNUqw==}
+    engines: {node: '>=16.0.0'}
+    peerDependencies:
+      '@swc/helpers': '>=0.5.1'
+    peerDependenciesMeta:
+      '@swc/helpers':
+        optional: true
+    dependencies:
+      '@module-federation/runtime-tools': 0.8.4
+      '@rspack/binding': /@rspack-canary/binding@1.2.0-canary-5775dc62-20250108060030
+      '@rspack/lite-tapable': 1.0.1
+      '@swc/helpers': 0.5.15
+      caniuse-lite: 1.0.30001692
+
+  /@rspack/lite-tapable@1.0.1:
+    resolution: {integrity: sha512-VynGOEsVw2s8TAlLf/uESfrgfrq2+rcXB1muPJYBWbsm1Oa6r5qVQhjA5ggM6z/coYPrsVMgovl3Ff7Q7OCp1w==}
+    engines: {node: '>=16.0.0'}
 
   /@rspack/plugin-react-refresh@1.0.1(react-refresh@0.16.0):
     resolution: {integrity: sha512-KSBc3bsr3mrAPViv7w9MpE9KEWm6q87EyRXyHlRfJ9PpQ56NbX9KZ7AXo7jPeECb0q5sfpM2PSEf+syBiMgLSw==}
@@ -1150,6 +1297,23 @@ packages:
       html-entities: 2.5.2
       react-refresh: 0.16.0
     dev: false
+
+  /@sinonjs/commons@3.0.1:
+    resolution: {integrity: sha512-K3mCHKQ9sVh8o1C9cxkwxaOmXoAMlDxC1mYyHrjqOWEcBjYr76t96zL2zlj5dUGZ3HSw240X1qgH3Mjf1yJWpQ==}
+    dependencies:
+      type-detect: 4.0.8
+    dev: false
+
+  /@sinonjs/fake-timers@14.0.0:
+    resolution: {integrity: sha512-QfoXRaUTjMVVn/ZbnD4LS3TPtqOkOdKIYCKldIVPnuClcwRKat6LI2mRZ2s5qiBfO6Fy03An35dSls/2/FEc0Q==}
+    dependencies:
+      '@sinonjs/commons': 3.0.1
+    dev: false
+
+  /@swc/helpers@0.5.15:
+    resolution: {integrity: sha512-JQ5TuMi45Owi4/BIMAJBoSQoOJu12oOk/gADqlcUL9JEdHB8vyjUSsxqeNXnmXHjYKMi2WcYtezGEEhqUI/E2g==}
+    dependencies:
+      tslib: 2.8.1
 
   /@testing-library/dom@10.4.0:
     resolution: {integrity: sha512-pemlzrSESWbdAloYml3bAJMEfNh1Z7EduzqPKprCH5S341frlpYnUEW0H72dLxa6IsYr+mPno20GiSm+h9dEdQ==}
@@ -1282,6 +1446,10 @@ packages:
 
   /@types/resolve@1.20.2:
     resolution: {integrity: sha512-60BCwRFOZCQhDncwQdxxeOEEkbc5dIMccYLwbxsS4TUNeVECQ/pBJ0j09mrHOl/JJvpRPGwO9SvE4nR2Nb/a4Q==}
+    dev: true
+
+  /@types/sinonjs__fake-timers@8.1.5:
+    resolution: {integrity: sha512-mQkU2jY8jJEF7YHjHvsQO8+3ughTL1mcnn96igfhONmR+fUPSKIkefQYpSe8bsly2Ep7oQbn/6VG5/9/0qcArQ==}
     dev: true
 
   /@vitejs/plugin-react@4.3.4(vite@5.4.11):
@@ -1566,7 +1734,6 @@ packages:
 
   /caniuse-lite@1.0.30001692:
     resolution: {integrity: sha512-A95VKan0kdtrsnMubMKxEKUKImOPSuCpYgxSQBo036P5YYgVIcOYJEgt/txJWqObiRQeISNCfef9nvlQ0vbV7A==}
-    dev: false
 
   /chai@5.1.2:
     resolution: {integrity: sha512-aGtmf24DW6MLHHG5gCx4zaI3uBq3KRtxeVs0DjFH6Z0rDNbsvTxFASFvdj79pxjxZ8/5u3PIiN3IwEIQkiiuPw==}
@@ -1695,6 +1862,15 @@ packages:
   /convert-source-map@2.0.0:
     resolution: {integrity: sha512-Kvp459HrV2FEJ1CAsi1Ku+MY3kasH19TFykTz2xWmMeq6bk2NU3XXvfJ+Q61m0xktWwt+1HSYf3JZsTms3aRJg==}
     dev: false
+
+  /core-js@3.39.0:
+    resolution: {integrity: sha512-raM0ew0/jJUqkJ0E6e8UDtl+y/7ktFivgWvqw8dNSQeNWoSDLvQ1H/RN3aPXB9tBd4/FhyR4RDPGhsNIMsAn7g==}
+    requiresBuild: true
+    dev: true
+
+  /core-js@3.40.0:
+    resolution: {integrity: sha512-7vsMc/Lty6AGnn7uFpYT56QesI5D2Y/UkgKounk87OP9Z2H9Z8kj6jzcSGAxFmUtDOS0ntK6lbQz+Nsa0Jj6mQ==}
+    requiresBuild: true
 
   /cosmiconfig@7.1.0:
     resolution: {integrity: sha512-AdmX6xUzdNASswsFtmwSt7Vj8po9IuqXm0UXz7QKPuEUmPB4XyjGfaAr2PSuELMwkRMVH1EpIkX5bTZGRB3eCA==}
@@ -2439,6 +2615,10 @@ packages:
     resolution: {integrity: sha512-RHxMLp9lnKHGHRng9QFhRCMbYAcVpn69smSGcq3f36xjgVVWThj4qqLbTLlq7Ssj8B+fIQ1EuCEGI2lKsyQeIw==}
     dev: true
 
+  /isomorphic-rslog@0.0.6:
+    resolution: {integrity: sha512-HM0q6XqQ93psDlqvuViNs/Ea3hAyGDkIdVAHlrEocjjAwGrs1fZ+EdQjS9eUPacnYB7Y8SoDdSY3H8p3ce205A==}
+    engines: {node: '>=14.17.6'}
+
   /jest-worker@26.6.2:
     resolution: {integrity: sha512-KWYVV1c4i+jbMpaBC+U++4Va0cp8OisU185o73T1vo99hqi7w8tSJfUXYswwqqrjzwxa6KpRK54WhPvwf5w6PQ==}
     engines: {node: '>= 10.13.0'}
@@ -3012,12 +3192,12 @@ packages:
       '@rollup/rollup-win32-x64-msvc': 4.30.1
       fsevents: 2.3.3
 
-  /rsbuild-plugin-dts@0.1.5(@rsbuild/core@..+projects+rsbuild+packages+core)(typescript@5.7.2):
+  /rsbuild-plugin-dts@0.1.5(@rsbuild/core@1.1.13)(typescript@5.7.2):
     resolution: {integrity: sha512-p5xN+Cxv59Pk7dHZJk3ca6ryycPfIbyVPk0KWuanLE0/c2s2A5KNJCB/Qyc/MZTYEXhcJNS8FTKxEMXXJGYwvA==}
     engines: {node: '>=16.0.0'}
     peerDependencies:
       '@microsoft/api-extractor': ^7
-      '@rsbuild/core': /Users/bytedance/Desktop/projects/rsbuild/packages/core
+      '@rsbuild/core': 1.x
       typescript: ^5
     peerDependenciesMeta:
       '@microsoft/api-extractor':
@@ -3025,7 +3205,7 @@ packages:
       typescript:
         optional: true
     dependencies:
-      '@rsbuild/core': link:../../projects/rsbuild/packages/core
+      '@rsbuild/core': 1.1.13
       magic-string: 0.30.17
       picocolors: 1.1.1
       tinyglobby: 0.2.10
@@ -3418,6 +3598,14 @@ packages:
     dependencies:
       matchit: 1.1.0
     dev: true
+
+  /tslib@2.8.1:
+    resolution: {integrity: sha512-oJFu94HQb+KVduSUQL7wnpmqnfmLsOA/nAh6b6EH0wCEoK0/mPeXU6c3wKDV83MkOuHPRHtSXKKU99IBazS/2w==}
+
+  /type-detect@4.0.8:
+    resolution: {integrity: sha512-0fr/mIH1dlO+x7TlcMy+bIDqKPsw/70tVyeHW787goQjhmqaZe10uwLujubK9q9Lg6Fiho1KUKDYz0Z7k7g5/g==}
+    engines: {node: '>=4'}
+    dev: false
 
   /typed-array-buffer@1.0.3:
     resolution: {integrity: sha512-nAYYwfY3qnzX30IkA6AQZjVbtK6duGontcQm1WSG1MD94YLqK0515GNApXkoxKOWMusVssAHWLh9SeaoefYFGw==}

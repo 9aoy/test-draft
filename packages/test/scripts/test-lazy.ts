@@ -1,6 +1,6 @@
 import { createRsbuild, mergeRsbuildConfig } from '@rsbuild/core';
 import { runFiles } from './helper.ts';
-import rsbuildConfig from './rsbuild.config.ts';
+import rsbuildConfig from '../rsbuild.config.ts';
 
 const lazyCompilationPost = 12345;
 

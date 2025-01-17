@@ -1,5 +1,14 @@
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
 import { a, aFileName } from '../src/a';
+
+vi.mock(import('../src/a'), async (importOriginal) => {
+  const mod = await importOriginal(); // type is inferred
+  return {
+    ...mod,
+    // replace some exports
+    a: 2,
+  };
+});
 
 describe('Index 1', () => {
   it('should add two numbers correctly', () => {
@@ -8,8 +17,8 @@ describe('Index 1', () => {
   });
 
   it('should test issuer correctly', () => {
-    // expect(a).toBe(2);
     expect(aFileName.endsWith('/packages/test/src/a.ts')).toBeTruthy();
+    expect(a).toBe(2);
   });
 
   it('should compare objects', () => {
