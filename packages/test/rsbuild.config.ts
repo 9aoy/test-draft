@@ -50,6 +50,7 @@ export default defineConfig({
         },
       };
 
+      // Need fixed: https://github.com/webpack/webpack/issues/17014
       if (process.env.TEST_ESM_LIBRARY) {
         return {
           ...config,
