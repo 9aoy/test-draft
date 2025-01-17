@@ -12,7 +12,7 @@ const pluginTestIssuer = (): RsbuildPlugin => {
     name: 'test-issuer',
     setup(api) {
       api.transform({ test: /a\.ts/, issuer: /index1.test/ }, (params) => {
-        params.code = params.code.replace('a = 1', 'a = 2');
+        params.code = params.code.replace('= 1', '= 2');
         return params;
       });
     },
