@@ -12,6 +12,11 @@
       "types": "./dist/expect.d.ts",
       "import": "./dist/expect.js",
       "require": "./dist/expect.cjs"
+    },
+    "./mock": {
+      "types": "./dist/mock/index.d.ts",
+      "import": "./dist/mock/index.js",
+      "require": "./dist/mock/index.cjs"
     }
   },
   "main": "./dist/index.cjs",

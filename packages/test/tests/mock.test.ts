@@ -1,4 +1,5 @@
-import { describe, it, expect, run, setSystemTime } from 'minimal-test';
+import { describe, it, expect, run } from 'minimal-test';
+import { setSystemTime } from 'minimal-test/mock';
 
 describe('Mock', () => {
   it('should mock Date correctly', () => {

@@ -10,6 +10,8 @@ const define = (...args) => {
   factory();
 };
 
+const bypassMockPrefix = `rstest_import_origin:`;
+
 export class CommonJsRunner extends BasicRunner {
   constructor(_options) {
     super(_options);
@@ -82,12 +84,35 @@ export class CommonJsRunner extends BasicRunner {
       return res;
     };
   }
+
+  isMocked(modulePath) {
+    const code = `(function() {
+      return !!globalThis.mocked?.['${modulePath}']
+    })`;
+    const fn = vm.runInThisContext(code);
+    return fn.call();
+  }
+
+  returnMockedFn(modulePath) {
+    const code = `(function(require) {
+      return globalThis.mocked?.['${modulePath}'].call(null, () => { return require('${bypassMockPrefix}${modulePath}') })
+    })`;
+
+    const fn = vm.runInThisContext(code);
+    return fn.call({}, this.getRequire().bind(null, path.dirname(modulePath)));
+  }
+
   createCjsRequirer() {
     const requireCache = Object.create(null);
     return (currentDirectory, modulePath, context = {}) => {
+      const bypassMocked = modulePath.startsWith(bypassMockPrefix);
+      modulePath = modulePath.replace(bypassMockPrefix, '');
       try {
         const file = context.file || this.getFile(modulePath, currentDirectory);
         if (!file) {
+          if (!bypassMocked && this.isMocked(modulePath)) {
+            return this.returnMockedFn(modulePath);
+          }
           return this.requirers.get('miss')(currentDirectory, modulePath);
         }
         if (file.path in requireCache) {
@@ -109,9 +134,7 @@ export class CommonJsRunner extends BasicRunner {
         })`;
         this.preExecute(code, file);
 
-        const fn = this._options.runInNewContext
-          ? vm.runInNewContext(code, this.globalContext, file.path)
-          : vm.runInThisContext(code, file.path);
+        const fn = vm.runInThisContext(code, file.path);
         fn.call(m.exports, ...argValues);
         this.postExecute(m, file);
         return m.exports;

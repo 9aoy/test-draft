@@ -83,7 +83,7 @@ export default defineConfig({
   },
   output: {
     externals: {
-      // '@mui/icons-material': '@mui/icons-material',
+      '@mui/icons-material': '@mui/icons-material',
       react: 'react',
       'react-dom': 'react-dom',
     },

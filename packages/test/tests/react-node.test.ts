@@ -1,5 +1,12 @@
 import { describe, it, expect, run } from 'minimal-test';
 console.log('load react-node.test.ts');
+import { mock } from 'minimal-test/mock';
+
+mock('@mui/icons-material', (requireActual) => {
+  const res = requireActual();
+  console.log('call mock @mui/icons-material');
+  return res;
+});
 
 describe('React Node', () => {
   it('test basic', () => {
