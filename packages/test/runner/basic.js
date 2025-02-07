@@ -1,4 +1,5 @@
 import path from 'node:path';
+
 const isRelativePath = (p) => /^\.\.?\//.test(p);
 const getSubPath = (p) => {
   const lastSlash = p.lastIndexOf('/');
@@ -44,11 +45,30 @@ export class BasicRunner {
       value: new Map(),
     });
   }
-  run(file) {
+
+  async getEnvironmentContext(testEnvironment) {
+    // TODO testEnvironment: 'node' | 'jsdom' | 'happy-dom'
+    if (testEnvironment === 'web') {
+      // TODO: build environment folder
+      const { default: JsdomEnv } = await import('../lib/environment/jsdom.js');
+      const vm = await JsdomEnv.setupVM({});
+      const context = vm.getVmContext();
+      return context;
+    }
+    return {};
+  }
+
+  async run(file, testEnvironment) {
     if (!this.globalContext) {
       this.globalContext = this.createGlobalContext();
     }
-    this.baseModuleScope = this.createBaseModuleScope();
+    const testEnvironmentContext =
+      await this.getEnvironmentContext(testEnvironment);
+    this.baseModuleScope = Object.assign(
+      {},
+      testEnvironmentContext,
+      this.createBaseModuleScope(),
+    );
     this.createRunner();
     const res = this.getRequire()(
       this._options.dist,

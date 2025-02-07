@@ -2,7 +2,13 @@ import fs from 'node:fs';
 import { EsmRunner } from '../runner/esm.js';
 import { CommonJsRunner } from '../runner/cjs.js';
 
-export default async ({ filePath, moduleRoot, outputPath, format }) => {
+export default async ({
+  filePath,
+  moduleRoot,
+  outputPath,
+  format,
+  testEnvironment,
+}) => {
   process.env.NODE_ENV = 'test';
 
   const runner =
@@ -28,6 +34,5 @@ export default async ({ filePath, moduleRoot, outputPath, format }) => {
           fs,
         });
 
-  await runner.run(filePath);
-
+  await runner.run(filePath, testEnvironment);
 };

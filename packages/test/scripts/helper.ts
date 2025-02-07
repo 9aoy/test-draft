@@ -3,11 +3,13 @@ import path from 'node:path';
 import Tinypool from 'tinypool';
 import { logger, type RsbuildDevServer } from '@rsbuild/core';
 
+type TestEnvironment = 'node' | 'web';
 export const runFiles = async (
   rsbuildServer: RsbuildDevServer,
+  testEnvironment: TestEnvironment = 'node',
   moduleRoot = path.resolve(process.cwd(), '../../../'),
 ) => {
-  const stats = await rsbuildServer.environments.node.getStats();
+  const stats = await rsbuildServer.environments[testEnvironment].getStats();
 
   const { entrypoints, outputPath } = stats.toJson({
     entrypoints: true,
@@ -29,7 +31,13 @@ export const runFiles = async (
       e.assets![e.assets!.length - 1].name,
     );
 
-    await runInPool(entryFilePath, moduleRoot, outputPath!, format);
+    await runInPool(
+      entryFilePath,
+      moduleRoot,
+      outputPath!,
+      format,
+      testEnvironment,
+    );
   };
 
   await Promise.all(entries.map((entry) => runFile(entry)));
@@ -40,6 +48,7 @@ export const runInPool = async (
   moduleRoot: string,
   outputPath: string,
   format: 'esm' | 'cjs',
+  testEnvironment: TestEnvironment,
 ) => {
   const pool = new Tinypool({
     filename: './scripts/worker.js',
@@ -53,6 +62,7 @@ export const runInPool = async (
       outputPath,
       moduleRoot,
       format,
+      testEnvironment,
     })
     .catch((err) => {
       logger.error(`run ${filePath} failed`, err);

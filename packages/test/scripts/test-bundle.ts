@@ -2,6 +2,8 @@ import { createRsbuild } from '@rsbuild/core';
 import { runFiles } from './helper.ts';
 import rsbuildConfig from '../rsbuild.config.ts';
 
+const testEnvironment = rsbuildConfig.output?.target === 'web' ? 'web' : 'node';
+
 // TODO: mock、dynamic import
 async function createRsbuildInstance() {
   const cwd = process.cwd();
@@ -22,7 +24,7 @@ async function run() {
 
   await rsbuildServer.afterListen();
 
-  await runFiles(rsbuildServer);
+  await runFiles(rsbuildServer, testEnvironment);
 
   console.timeEnd('run all tests with bundle');
 

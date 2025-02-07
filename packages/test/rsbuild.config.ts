@@ -27,6 +27,7 @@ export default defineConfig({
     writeToDisk: true,
   },
   tools: {
+    htmlPlugin: false,
     rspack: (config) => {
       config.optimization = {
         nodeEnv: false,
@@ -49,6 +50,16 @@ export default defineConfig({
           },
         },
       };
+
+      // compat environment for jsdom / happy-dom
+      config.output!.chunkFormat = 'commonjs';
+      config.output!.chunkLoading = 'require';
+      config.externalsType = 'commonjs';
+      config.node ??= {};
+      if (config.node !== false) {
+        config.node.__filename = false;
+        config.node.__dirname = false;
+      }
 
       // Need fixed: https://github.com/webpack/webpack/issues/17014
       if (process.env.TEST_ESM_LIBRARY) {
@@ -81,15 +92,29 @@ export default defineConfig({
       strategy: 'all-in-one',
     },
   },
+  server: {
+    printUrls: false,
+  },
   output: {
     externals: {
       '@mui/icons-material': '@mui/icons-material',
       react: 'react',
-      'react-dom': 'react-dom',
+      // 'react-dom': 'react-dom',
+      'minimal-test': 'minimal-test',
+      'minimal-test/mock': 'minimal-test/mock',
     },
     filename: {
       js: '[name].cjs',
+      css: '[name].css',
     },
-    target: 'node',
+    distPath: {
+      js: './',
+      css: './',
+      assets: './',
+      jsAsync: './',
+      cssAsync: './',
+    },
+    target: 'web',
+    // target: 'node',
   },
 });

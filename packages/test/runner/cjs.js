@@ -107,12 +107,13 @@ export class CommonJsRunner extends BasicRunner {
     return (currentDirectory, modulePath, context = {}) => {
       const bypassMocked = modulePath.startsWith(bypassMockPrefix);
       modulePath = modulePath.replace(bypassMockPrefix, '');
+
+      if (!bypassMocked && this.isMocked(modulePath)) {
+        return this.returnMockedFn(modulePath);
+      }
       try {
         const file = context.file || this.getFile(modulePath, currentDirectory);
         if (!file) {
-          if (!bypassMocked && this.isMocked(modulePath)) {
-            return this.returnMockedFn(modulePath);
-          }
           return this.requirers.get('miss')(currentDirectory, modulePath);
         }
         if (file.path in requireCache) {

@@ -6,6 +6,11 @@ export class Expectation<T> {
       throw new Error(`Expected ${expected} but got ${this.actual}`);
     }
   }
+  toBeDefined() {
+    if (typeof this.actual === 'undefined') {
+      throw new Error(`Expected defined but got undefined`);
+    }
+  }
 
   toEqual(expected: T) {
     const actualStr = JSON.stringify(this.actual);
